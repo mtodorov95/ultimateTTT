@@ -1,4 +1,4 @@
-//import 'dart:html';
+import 'dart:html';
 import 'models/TTTBoard.dart';
 
 void main() {
