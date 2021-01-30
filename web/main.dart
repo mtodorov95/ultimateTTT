@@ -1,17 +1,15 @@
 import 'dart:html';
+import 'dart:async' show StreamSubscription;
 import 'models/TTTBoard.dart';
+import 'utils/DOMUtils.dart';
 
-void main() {
-  TTTBoard testBoard = new TTTBoard();
+TTTBoard mainBoard;
+List<TTTBoard> littleBoards;
+List<int> availableMainSqaures;
+Map<DivElement, StreamSubscription> availableLittleSquares;
+String currentPlayer;
 
-  print("Winner: ${testBoard.move(4, 'X')}");
-  print(testBoard);
-  print("Winner: ${testBoard.move(8, 'O')}");
-  print(testBoard);
-  print("Winner: ${testBoard.move(6, 'X')}");
-  print(testBoard);
-  print("Winner: ${testBoard.move(5, 'O')}");
-  print(testBoard);
-  print("Winner: ${testBoard.move(2, 'X')}");
-  print(testBoard);
-}
+DivElement mainBoardDiv = querySelector('#main-board');
+DivElement messageDiv = querySelector('#message');
+
+void main() {}
