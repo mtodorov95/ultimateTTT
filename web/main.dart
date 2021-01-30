@@ -3,6 +3,7 @@ import 'dart:async' show StreamSubscription;
 import 'models/TTTBoard.dart';
 import 'utils/DOMUtils.dart';
 
+DOMUtils utils = DOMUtils();
 TTTBoard mainBoard;
 List<TTTBoard> littleBoards;
 List<int> availableMainSquares;
@@ -54,7 +55,7 @@ void createBoard() {
 
 void nextTurn([int lastLittleSquare]) {
   currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
-  DOMUtils().showMessage(messageDiv, 'Player: $currentPlayer');
+  utils.showMessage(messageDiv, 'Player: $currentPlayer');
 
   if (lastLittleSquare != null &&
       mainBoard[lastLittleSquare] == null &&
@@ -66,9 +67,8 @@ void nextTurn([int lastLittleSquare]) {
 
   for (int mainSquare in availableMainSquares) {
     for (int littleSquare in littleBoards[mainSquare].emptySquares) {
-      DivElement squareDiv =
-          DOMUtils().getLittleSquareDiv(mainSquare, littleSquare);
-      DOMUtils().toggleHighlight(squareDiv);
+      DivElement squareDiv = utils.getLittleSquareDiv(mainSquare, littleSquare);
+      utils.toggleHighlight(squareDiv);
       availableLittleSquares[squareDiv] = squareDiv.onClick
           .listen((MouseEvent event) => move(mainSquare, littleSquare));
     }
@@ -78,27 +78,26 @@ void nextTurn([int lastLittleSquare]) {
 void move(int mainSquare, int littleSquare) {
   availableLittleSquares
     ..forEach((DivElement squareDiv, StreamSubscription listener) {
-      DOMUtils().toggleHighlight(squareDiv);
+      utils.toggleHighlight(squareDiv);
       listener.cancel();
     })
     ..clear();
 
   String littleBoardWinner =
       littleBoards[mainSquare].move(littleSquare, currentPlayer);
-  DOMUtils().markSquare(
-      DOMUtils().getLittleSquareDiv(mainSquare, littleSquare), currentPlayer);
+  utils.markSquare(
+      utils.getLittleSquareDiv(mainSquare, littleSquare), currentPlayer);
 
   if (littleBoardWinner != null) {
     String mainBoardWinner = mainBoard.move(mainSquare, littleBoardWinner);
-    DOMUtils().markSquare(
-        DOMUtils().getMainSquareDiv(mainSquare)..children.clear(),
-        currentPlayer);
+    utils.markSquare(
+        utils.getMainSquareDiv(mainSquare)..children.clear(), currentPlayer);
 
     if (mainBoardWinner != null) {
-      DOMUtils().showMessage(messageDiv, 'Player $mainBoardWinner wins!');
+      utils.showMessage(messageDiv, 'Player $mainBoardWinner wins!');
       return;
     } else if (mainBoard.isFull) {
-      DOMUtils().showMessage(messageDiv, "It's a tie!");
+      utils.showMessage(messageDiv, "It's a tie!");
       return;
     }
   }
